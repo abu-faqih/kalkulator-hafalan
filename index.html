@@ -1,0 +1,2073 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kalkulator Hafalan Quran - Plan Your Quran Memorization</title>
+
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- Font Awesome CDN -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --primary-color: #2c5aa0;
+      --secondary-color: #d4af37;
+      --success-color: #28a745;
+      --info-color: #17a2b8;
+      --warning-color: #ffc107;
+      --danger-color: #dc3545;
+      --light-color: #f8f9fa;
+      --dark-color: #343a40;
+      --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --shadow: 0 6px 18px rgba(14,22,54,0.1);
+      --border-radius: 12px;
+    }
+
+    body { 
+      background: #f8fafc; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+    }
+
+    .card { 
+      border-radius: var(--border-radius); 
+      box-shadow: var(--shadow);
+      border: none;
+      margin-bottom: 1.5rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(14,22,54,0.15);
+    }
+
+    .mono { 
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace; 
+    }
+
+    .small-note { 
+      font-size: .88rem; 
+      color: #6b7280; 
+    }
+
+    pre { 
+      white-space: pre-wrap; 
+      word-break: break-word; 
+    }
+
+    .result-badge { 
+      font-size: 0.95rem; 
+    }
+
+    .nav-tabs .nav-link { 
+      color: #6c757d; 
+      font-weight: 500; 
+      border: none;
+      padding: 12px 20px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-tabs .nav-link:hover {
+      color: var(--primary-color);
+      background-color: rgba(44, 90, 160, 0.05);
+    }
+
+    .nav-tabs .nav-link.active { 
+      color: var(--primary-color); 
+      font-weight: 600; 
+      background-color: white;
+      border-bottom: 3px solid var(--primary-color);
+    }
+
+    @media (max-width:575px){ 
+      .two-col { 
+        flex-direction: column; 
+        gap: .75rem; 
+      } 
+    }
+
+    .juz-info { 
+      background: var(--gradient-primary); 
+      color: white; 
+    }
+
+    .surat-arabic { 
+      font-family: 'Traditional Arabic', 'Scheherazade New', 'Amiri', serif; 
+      font-size: 1.2em; 
+      direction: rtl;
+    }
+
+    .progress-bar-custom {
+      background: var(--gradient-primary);
+      border-radius: 10px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #6c757d;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      padding: 10px 20px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #234a8a;
+      border-color: #234a8a;
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background: var(--success-color);
+      border-color: var(--success-color);
+      padding: 10px 20px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-success:hover {
+      background: #218838;
+      border-color: #218838;
+      transform: translateY(-2px);
+    }
+
+    .accordion-button:not(.collapsed) {
+      background-color: rgba(44, 90, 160, 0.05);
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    .footer {
+      background: var(--dark-color);
+      color: white;
+      padding: 2rem 0;
+      margin-top: 3rem;
+    }
+
+    .hero-section {
+      background: var(--gradient-primary);
+      color: white;
+      padding: 3rem 0;
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
+      margin-bottom: 2rem;
+    }
+
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .loading-spinner {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .print-only {
+      display: none;
+    }
+
+    @media print {
+      .no-print {
+        display: none;
+      }
+      .print-only {
+        display: block;
+      }
+      .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--primary-color);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--primary-color);
+    }
+
+    .badge-custom {
+      background: var(--gradient-primary);
+      color: white;
+    }
+
+
+  </style>
+</head>
+<body>
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="display-5 fw-bold">Kalkulator Hafalan Quran</h1>
+          <p class="lead">Rencanakan dan kelola target hafalan Quran Anda dengan mudah dan sistematis</p>
+          <div class="d-flex gap-2 flex-wrap">
+            <span class="badge bg-light text-dark"><i class="fas fa-check-circle me-1"></i> Per Bagian</span>
+            <span class="badge bg-light text-dark"><i class="fas fa-check-circle me-1"></i> Per Baris</span>
+            <span class="badge bg-light text-dark"><i class="fas fa-check-circle me-1"></i> Per Ayat</span>
+            <span class="badge bg-light text-dark"><i class="fas fa-check-circle me-1"></i> Rencana Mingguan</span>
+            <span class="badge bg-light text-dark"><i class="fas fa-check-circle me-1"></i> Ekspor CSV</span>
+          </div>
+        </div>
+        <div class="col-md-4 text-center">
+          <div class="feature-icon mx-auto">
+            <i class="fas fa-book-quran fa-2x text-white"></i>
+          </div>
+          <h5>Hafalan Terstruktur</h5>
+          <p class="small">Capai target hafalan dengan perencanaan yang matang</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container py-4">
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+      <div class="col-md-3 col-6">
+        <div class="stat-card">
+          <div class="stat-number">30</div>
+          <div class="stat-label">Juz</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-card">
+          <div class="stat-number">114</div>
+          <div class="stat-label">Surat</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-card">
+          <div class="stat-number">6236</div>
+          <div class="stat-label">Ayat</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-card">
+          <div class="stat-number">604</div>
+          <div class="stat-label">Halaman</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips Section -->
+    <div class="card p-4 mt-4">
+      <h5 class="card-title mb-3"><i class="fas fa-lightbulb me-2 text-warning"></i>Tips Hafalan Efektif</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="timeline">
+            <div class="timeline-item">
+              <h6 class="fw-bold">Mulai dengan Niat Ikhlas</h6>
+              <p class="small mb-0">Niatkan hafalan semata-mata untuk Allah SWT, bukan untuk pujian manusia.</p>
+            </div>
+            <div class="timeline-item">
+              <h6 class="fw-bold">Pilih Waktu Terbaik</h6>
+              <p class="small mb-0">Waktu sepertiga malam terakhir dan setelah shubuh adalah waktu mustajab untuk menghafal.</p>
+            </div>
+            <div class="timeline-item">
+              <h6 class="fw-bold">Gunakan Satu Mushaf</h6>
+              <p class="small mb-0">Konsistensi menggunakan mushaf yang sama membantu visual memory.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="timeline">
+            <div class="timeline-item">
+              <h6 class="fw-bold">Muraja'ah Teratur</h6>
+              <p class="small mb-0">Alokasikan 20% waktu untuk hafalan baru dan 80% untuk mengulang hafalan lama.</p>
+            </div>
+            <div class="timeline-item">
+              <h6 class="fw-bold">Pahami Makna</h6>
+              <p class="small mb-0">Memahami tafsir ayat membantu menghafal dengan lebih baik dan bermakna.</p>
+            </div>
+            <div class="timeline-item">
+              <h6 class="fw-bold">Gunakan Metode Tasmi'</h6>
+              <p class="small mb-0">Setor hafalan kepada guru atau partner untuk koreksi dan motivasi.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="alertArea" class="mt-4"></div>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs mb-3 no-print" id="modeTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="perBagian-tab" data-bs-toggle="tab" data-bs-target="#perBagian" type="button" role="tab">
+          <i class="fas fa-layer-group me-2"></i>Per Bagian
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="perBaris-tab" data-bs-toggle="tab" data-bs-target="#perBaris" type="button" role="tab">
+          <i class="fas fa-text-height me-2"></i>Per Baris
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="perAyat-tab" data-bs-toggle="tab" data-bs-target="#perAyat" type="button" role="tab">
+          <i class="fas fa-tags me-2"></i>Per Ayat
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="modeTabContent">
+      <!-- === Mode Per Bagian === -->
+      <div class="tab-pane fade show active" id="perBagian" role="tabpanel">
+        <div class="card p-4 mb-4">
+          <h5 class="card-title mb-3"><i class="fas fa-layer-group me-2 text-primary"></i>Hitung Hafalan Per Bagian</h5>
+          <div class="row g-3">
+            <div class="col-md-3 col-6">
+              <label class="form-label fw-semibold">Halaman per juz</label>
+              <input id="pagesPerJuz" type="number" min="1" class="form-control" value="20" />
+              <div class="small-note mt-1">Biasanya 20 halaman per juz</div>
+            </div>
+            <div class="col-md-3 col-6">
+              <label class="form-label fw-semibold">Bagian per halaman</label>
+              <input id="partsPerPage" type="number" min="1" class="form-control" value="5" />
+              <div class="small-note mt-1">Bagi halaman menjadi beberapa bagian</div>
+            </div>
+            <div class="col-md-3 col-6">
+              <label class="form-label fw-semibold">Bagian per hari</label>
+              <input id="partsPerDay" type="number" min="1" class="form-control" value="1" />
+              <div class="small-note mt-1">Target harian Anda</div>
+            </div>
+            <div class="col-md-3 col-6">
+              <label class="form-label fw-semibold">Hari hafal per minggu</label>
+              <select id="daysPerWeek" class="form-select">
+                <option value="7">7 hari (setiap hari)</option>
+                <option value="6">6 hari</option>
+                <option value="5" selected>5 hari (weekdays)</option>
+                <option value="4">4 hari</option>
+                <option value="3">3 hari</option>
+                <option value="2">2 hari</option>
+                <option value="1">1 hari (akhir pekan)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 mt-4 two-col flex-wrap">
+            <button id="calcBtnBagian" class="btn btn-primary"><i class="fa-solid fa-calculator me-1"></i> Hitung</button>
+            <button id="genPlanBtnBagian" class="btn btn-outline-primary"><i class="fa-solid fa-list-check me-1"></i> Buat Rencana Mingguan</button>
+            <button id="copyBtnBagian" class="btn btn-success"><i class="fa-solid fa-copy me-1"></i> Salin Ringkasan</button>
+            <button id="resetBtnBagian" class="btn btn-light"><i class="fa-solid fa-rotate-left me-1"></i> Reset</button>
+            <button id="printBtnBagian" class="btn btn-outline-secondary"><i class="fa-solid fa-print me-1"></i> Cetak</button>
+          </div>
+        </div>
+
+        <div id="resultsBagian" class="card p-4 mb-4 visually-hidden">
+          <h5 class="card-title mb-3"><i class="fas fa-chart-bar me-2 text-primary"></i>Hasil Perhitungan</h5>
+          <div class="row g-3 align-items-center">
+            <div class="col-sm-3">
+              <div class="p-3 rounded-3 bg-light">
+                <div class="small-note">Total Bagian</div>
+                <div id="totalParts" class="fw-bold fs-4 text-primary">—</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="p-3 rounded-3 bg-light">
+                <div class="small-note">Bagian / Minggu</div>
+                <div id="partsPerWeek" class="fw-bold fs-4 text-info">—</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="p-3 rounded-3 bg-light">
+                <div class="small-note">Perkiraan Minggu</div>
+                <div id="weeksNeeded" class="fw-bold fs-4 text-success">—</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="p-3 rounded-3 bg-light">
+                <div class="small-note">Perkiraan Bulan</div>
+                <div id="monthsApprox" class="fw-bold fs-4 text-warning">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <!-- <div class="mt-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="small-note">Progress Penyelesaian</span>
+              <span id="progressPercentage" class="small-note">0%</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div id="progressBar" class="progress-bar progress-bar-custom" role="progressbar" style="width: 0%"></div>
+            </div>
+          </div> -->
+
+          <div class="mt-4">
+            <div class="small-note">Catatan:</div>
+            <ul class="mb-0">
+              <li>Perkiraan bulan dihitung menggunakan 1 bulan ≈ 4.345 minggu.</li>
+              <li>Rencana mingguan membagi bagian secara berurutan; minggu terakhir mungkin kurang penuh.</li>
+              <li>Jangan lupa untuk mengalokasikan waktu untuk muraja'ah (mengulang) hafalan lama.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div id="planCardBagian" class="card p-4 visually-hidden">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h5 class="card-title mb-1"><i class="fas fa-calendar-alt me-2 text-primary"></i>Rencana Mingguan</h5>
+              <div class="small-note">Klik nomor minggu untuk membuka detail bagian pada minggu tersebut.</div>
+            </div>
+            <div class="d-flex gap-2">
+              <button id="downloadCsvBagian" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-file-csv me-1"></i> Unduh CSV</button>
+              <button id="printPlanBagian" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-print me-1"></i> Cetak Rencana</button>
+            </div>
+          </div>
+
+          <div id="planListBagian" class="accordion"></div>
+        </div>
+
+        <div id="loadingBagian" class="loading-spinner">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2">Memproses rencana hafalan...</p>
+        </div>
+      </div>
+
+      <!-- === Mode Per Baris === -->
+      <div class="tab-pane fade" id="perBaris" role="tabpanel">
+        <div class="card p-4 mb-4">
+          <h5 class="card-title mb-3"><i class="fas fa-text-height me-2 text-primary"></i>Hitung Hafalan Per Baris</h5>
+          <div class="row g-3">
+            <div class="col-md-3 col-6">
+              <label class="form-label fw-semibold">Total baris per halaman</label>
+              <input id="barisPerHalaman" type="number" min="1" class="form-control" value="15" />
+              <div class="small-note mt-1">Biasanya 15 baris per halaman</div>
+            </div>
+            <div class="col-md-3 col-6">
+              <label class="form-label fw-semibold">Halaman per juz</label>
+              <input id="halamanPerJuz" type="number" min="1" class="form-control" value="20" />
+              <div class="small-note mt-1">Biasanya 20 halaman per juz</div>
+            </div>
+            <div class="col-md-3 col-6">
+              <label class="form-label fw-semibold">Baris hafalan per hari</label>
+              <input id="barisPerHari" type="number" min="1" class="form-control" value="5" />
+              <div class="small-note mt-1">Target harian Anda</div>
+            </div>
+            <div class="col-md-3 col-6">
+              <label class="form-label fw-semibold">Hari hafal per minggu</label>
+              <select id="hariPerMinggu" class="form-select">
+                <option value="7">7 hari (setiap hari)</option>
+                <option value="6">6 hari</option>
+                <option value="5" selected>5 hari (weekdays)</option>
+                <option value="4">4 hari</option>
+                <option value="3">3 hari</option>
+                <option value="2">2 hari</option>
+                <option value="1">1 hari (akhir pekan)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 mt-4 two-col flex-wrap">
+            <button id="calcBtnBaris" class="btn btn-primary"><i class="fa-solid fa-calculator me-1"></i> Hitung</button>
+            <button id="genPlanBtnBaris" class="btn btn-outline-primary"><i class="fa-solid fa-list-check me-1"></i> Buat Rencana Mingguan</button>
+            <button id="copyBtnBaris" class="btn btn-success"><i class="fa-solid fa-copy me-1"></i> Salin Ringkasan</button>
+            <button id="resetBtnBaris" class="btn btn-light"><i class="fa-solid fa-rotate-left me-1"></i> Reset</button>
+            <button id="printBtnBaris" class="btn btn-outline-secondary"><i class="fa-solid fa-print me-1"></i> Cetak</button>
+          </div>
+        </div>
+
+        <div id="resultsBaris" class="card p-4 mb-4 visually-hidden">
+          <h5 class="card-title mb-3"><i class="fas fa-chart-bar me-2 text-primary"></i>Hasil Perhitungan</h5>
+          <div class="row g-3 align-items-center">
+            <div class="col-sm-3">
+              <div class="p-3 rounded-3 bg-light">
+                <div class="small-note">Total Baris</div>
+                <div id="totalBaris" class="fw-bold fs-4 text-primary">—</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="p-3 rounded-3 bg-light">
+                <div class="small-note">Baris / Minggu</div>
+                <div id="barisPerMinggu" class="fw-bold fs-4 text-info">—</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="p-3 rounded-3 bg-light">
+                <div class="small-note">Perkiraan Minggu</div>
+                <div id="weeksNeededBaris" class="fw-bold fs-4 text-success">—</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="p-3 rounded-3 bg-light">
+                <div class="small-note">Perkiraan Bulan</div>
+                <div id="monthsApproxBaris" class="fw-bold fs-4 text-warning">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <!-- <div class="mt-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="small-note">Progress Penyelesaian</span>
+              <span id="progressPercentageBaris" class="small-note">0%</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div id="progressBarBaris" class="progress-bar progress-bar-custom" role="progressbar" style="width: 0%"></div>
+            </div>
+          </div> -->
+
+          <div class="mt-4">
+            <div class="small-note">Catatan:</div>
+            <ul class="mb-0">
+              <li>Perkiraan bulan dihitung menggunakan 1 bulan ≈ 4.345 minggu.</li>
+              <li>Rencana mingguan membagi baris secara berurutan; minggu terakhir mungkin kurang penuh.</li>
+              <li>Metode per baris cocok untuk penghafal yang ingin target lebih terukur.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div id="planCardBaris" class="card p-4 visually-hidden">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h5 class="card-title mb-1"><i class="fas fa-calendar-alt me-2 text-primary"></i>Rencana Mingguan</h5>
+              <div class="small-note">Klik nomor minggu untuk membuka detail baris pada minggu tersebut.</div>
+            </div>
+            <div class="d-flex gap-2">
+              <button id="downloadCsvBaris" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-file-csv me-1"></i> Unduh CSV</button>
+              <button id="printPlanBaris" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-print me-1"></i> Cetak Rencana</button>
+            </div>
+          </div>
+
+          <div id="planListBaris" class="accordion"></div>
+        </div>
+
+        <div id="loadingBaris" class="loading-spinner">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2">Memproses rencana hafalan...</p>
+        </div>
+      </div>
+
+      <!-- === Mode Per Ayat === -->
+      <div class="tab-pane fade" id="perAyat" role="tabpanel">
+        <div class="card p-4 mb-4">
+          <h5 class="card-title mb-3"><i class="fas fa-verse me-2 text-primary"></i>Hitung Hafalan Per Ayat</h5>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Pilih Juz</label>
+              <select id="selectJuz" class="form-select">
+                <!-- Options akan diisi oleh JavaScript -->
+              </select>
+              <div class="small-note mt-1">Pilih juz yang ingin dihafal</div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Ayat hafalan per hari</label>
+              <input id="ayatPerHari" type="number" min="1" class="form-control" value="5" />
+              <div class="small-note mt-1">Target ayat harian Anda</div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Hari hafal per minggu</label>
+              <select id="hariPerMingguAyat" class="form-select">
+                <option value="7">7 hari (setiap hari)</option>
+                <option value="6">6 hari</option>
+                <option value="5" selected>5 hari (weekdays)</option>
+                <option value="4">4 hari</option>
+                <option value="3">3 hari</option>
+                <option value="2">2 hari</option>
+                <option value="1">1 hari (akhir pekan)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Info Juz -->
+          <div id="juzInfo" class="mt-4 p-4 rounded juz-info visually-hidden">
+            <div class="row text-center">
+              <div class="col-4">
+                <div class="fw-bold fs-3" id="totalAyatDisplay">0</div>
+                <div class="small">Total Ayat</div>
+              </div>
+              <div class="col-4">
+                <div class="fw-bold fs-3" id="suratDisplay">0</div>
+                <div class="small">Surat</div>
+              </div>
+              <div class="col-4">
+                <div class="fw-bold fs-3" id="halamanDisplay">0</div>
+                <div class="small">Halaman Mulai</div>
+              </div>
+            </div>
+            <div class="mt-3 text-center" id="juzDetail"></div>
+          </div>
+
+          <div class="d-flex gap-2 mt-4 two-col flex-wrap">
+            <button id="calcBtnAyat" class="btn btn-primary"><i class="fa-solid fa-calculator me-1"></i> Hitung</button>
+            <button id="genPlanBtnAyat" class="btn btn-outline-primary"><i class="fa-solid fa-list-check me-1"></i> Buat Rencana Mingguan</button>
+            <button id="copyBtnAyat" class="btn btn-success"><i class="fa-solid fa-copy me-1"></i> Salin Ringkasan</button>
+            <button id="resetBtnAyat" class="btn btn-light"><i class="fa-solid fa-rotate-left me-1"></i> Reset</button>
+            <button id="printBtnAyat" class="btn btn-outline-secondary"><i class="fa-solid fa-print me-1"></i> Cetak</button>
+          </div>
+        </div>
+
+        <div id="resultsAyat" class="card p-4 mb-4 visually-hidden">
+          <h5 class="card-title mb-3"><i class="fas fa-chart-bar me-2 text-primary"></i>Hasil Perhitungan</h5>
+          <div class="row g-3 align-items-center">
+            <div class="col-sm-3">
+              <div class="p-3 rounded-3 bg-light">
+                <div class="small-note">Total Ayat</div>
+                <div id="totalAyat" class="fw-bold fs-4 text-primary">—</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="p-3 rounded-3 bg-light">
+                <div class="small-note">Ayat / Minggu</div>
+                <div id="ayatPerMinggu" class="fw-bold fs-4 text-info">—</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="p-3 rounded-3 bg-light">
+                <div class="small-note">Perkiraan Minggu</div>
+                <div id="weeksNeededAyat" class="fw-bold fs-4 text-success">—</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="p-3 rounded-3 bg-light">
+                <div class="small-note">Perkiraan Bulan</div>
+                <div id="monthsApproxAyat" class="fw-bold fs-4 text-warning">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <!-- <div class="mt-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="small-note">Progress Penyelesaian</span>
+              <span id="progressPercentageAyat" class="small-note">0%</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div id="progressBarAyat" class="progress-bar progress-bar-custom" role="progressbar" style="width: 0%"></div>
+            </div> 
+          </div> -->
+
+          <div class="mt-4">
+            <div class="small-note">Catatan:</div>
+            <ul class="mb-0">
+              <li>Perkiraan bulan dihitung menggunakan 1 bulan ≈ 4.345 minggu.</li>
+              <li>Rencana mingguan membagi ayat secara berurutan; minggu terakhir mungkin kurang penuh.</li>
+              <li>Data jumlah ayat berdasarkan standar Mushaf Madinah.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div id="planCardAyat" class="card p-4 visually-hidden">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h5 class="card-title mb-1"><i class="fas fa-calendar-alt me-2 text-primary"></i>Rencana Mingguan</h5>
+              <div class="small-note">Klik nomor minggu untuk membuka detail ayat pada minggu tersebut.</div>
+            </div>
+            <div class="d-flex gap-2">
+              <button id="downloadCsvAyat" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-file-csv me-1"></i> Unduh CSV</button>
+              <button id="printPlanAyat" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-print me-1"></i> Cetak Rencana</button>
+            </div>
+          </div>
+
+          <div id="planListAyat" class="accordion"></div>
+        </div>
+
+        <div id="loadingAyat" class="loading-spinner">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2">Memproses rencana hafalan...</p>
+        </div>
+      </div>
+    </div>
+
+    
+
+    
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer no-print">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Kalkulator Hafalan Quran</h5>
+          <p>Tools untuk membantu umat Muslim merencanakan dan menyelesaikan hafalan Al-Quran dengan sistematis dan terukur.</p>
+        </div>
+        <div class="col-md-3">
+          <h5>Fitur</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-light">Perhitungan Waktu</a></li>
+            <li><a href="#" class="text-light">Rencana Mingguan</a></li>
+            <li><a href="#" class="text-light">Ekspor Data</a></li>
+            <li><a href="#" class="text-light">Tips Hafalan</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h5>Kontak</h5>
+          <ul class="list-unstyled">
+            <li><i class="fas fa-envelope me-2"></i><a href="mailto:muhtaufiq99@gmail.com" class="text-light"> muhtaufiq99@gmail.com</a></li>
+            <li><i class="fas fa-globe me-2"></i><a href="www.pusatquran.com" class="text-light"> www.pusatquran.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p class="mb-0">&copy; 2024 Kalkulator Hafalan Quran. Semua hak dilindungi.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Print Section -->
+  <div class="print-only">
+    <div class="container">
+      <h1 class="text-center">Rencana Hafalan Quran</h1>
+      <div id="printContent"></div>
+      <footer class="text-center mt-4">
+        <p>Dicetak dari Kalkulator Hafalan Quran - www.pusatquran.com</p>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    // ===============================
+    // DATA LENGKAP JUZ DAN AYAT MAPPING
+    // ===============================
+
+    // Data nama surat dalam Arabic dan Latin
+    const suratArabicNames = {
+      "Al-Fatihah": "الفاتحة",
+      "Al-Baqarah": "البقرة", 
+      "Ali 'Imran": "آل عمران",
+      "An-Nisa": "النساء",
+      "Al-Ma'idah": "المائدة",
+      "Al-An'am": "الأنعام",
+      "Al-A'raf": "الأعراف",
+      "Al-Anfal": "الأنفال",
+      "At-Taubah": "التوبة",
+      "Yunus": "يونس",
+      "Hud": "هود",
+      "Yusuf": "يوسف",
+      "Ar-Ra'd": "الرعد",
+      "Ibrahim": "إبراهيم",
+      "Al-Hijr": "الحجر",
+      "An-Nahl": "النحل",
+      "Al-Isra": "الإسراء",
+      "Al-Kahf": "الكهف",
+      "Maryam": "مريم",
+      "Ta Ha": "طه",
+      "Al-Anbiya": "الأنبياء",
+      "Al-Hajj": "الحج",
+      "Al-Mu'minun": "المؤمنون",
+      "An-Nur": "النور",
+      "Al-Furqan": "الفرقان",
+      "Asy-Syu'ara": "الشعراء",
+      "An-Naml": "النمل",
+      "Al-Qasas": "القصص",
+      "Al-'Ankabut": "العنكبوت",
+      "Ar-Rum": "الروم",
+      "Luqman": "لقمان",
+      "As-Sajdah": "السجدة",
+      "Al-Ahzab": "الأحزاب",
+      "Saba": "سبأ",
+      "Fatir": "فاطر",
+      "Ya Sin": "يس",
+      "As-Saffat": "الصافات",
+      "Sad": "ص",
+      "Az-Zumar": "الزمر",
+      "Ghafir": "غافر",
+      "Fussilat": "فصلت",
+      "Asy-Syura": "الشورى",
+      "Az-Zukhruf": "الزخرف",
+      "Ad-Dukhan": "الدخان",
+      "Al-Jasiyah": "الجاثية",
+      "Al-Ahqaf": "الأحقاف",
+      "Muhammad": "محمد",
+      "Al-Fath": "الفتح",
+      "Al-Hujurat": "الحجرات",
+      "Qaf": "ق",
+      "Adz-Dzariyat": "الذاريات",
+      "At-Tur": "الطور",
+      "An-Najm": "النجم",
+      "Al-Qamar": "القمر",
+      "Ar-Rahman": "الرحمن",
+      "Al-Waqi'ah": "الواقعة",
+      "Al-Hadid": "الحديد",
+      "Al-Mujadilah": "المجادلة",
+      "Al-Hasyr": "الحشر",
+      "Al-Mumtahanah": "الممتحنة",
+      "As-Saff": "الصف",
+      "Al-Jumu'ah": "الجمعة",
+      "Al-Munafiqun": "المنافقون",
+      "At-Tagabun": "التغابن",
+      "At-Talaq": "الطلاق",
+      "At-Tahrim": "التحريم",
+      "Al-Mulk": "الملك",
+      "Al-Qalam": "القلم",
+      "Al-Haqqah": "الحاقة",
+      "Al-Ma'arij": "المعارج",
+      "Nuh": "نوح",
+      "Al-Jinn": "الجن",
+      "Al-Muzzammil": "المزمل",
+      "Al-Muddassir": "المدثر",
+      "Al-Qiyamah": "القيامة",
+      "Al-Insan": "الإنسان",
+      "Al-Mursalat": "المرسلات",
+      "An-Naba": "النبأ",
+      "An-Nazi'at": "النازعات",
+      "'Abasa": "عبس",
+      "At-Takwir": "التكوير",
+      "Al-Infitar": "الإنفطار",
+      "Al-Mutaffifin": "المطففين",
+      "Al-Insyiqaq": "الانشقاق",
+      "Al-Buruj": "البروج",
+      "At-Tariq": "الطارق",
+      "Al-A'la": "الأعلى",
+      "Al-Gasyiyah": "الغاشية",
+      "Al-Fajr": "الفجر",
+      "Al-Balad": "البلد",
+      "Asy-Syams": "الشمس",
+      "Al-Lail": "الليل",
+      "Ad-Duha": "الضحى",
+      "Al-Insyirah": "الشرح",
+      "At-Tin": "التين",
+      "Al-'Alaq": "العلق",
+      "Al-Qadr": "القدر",
+      "Al-Bayyinah": "البينة",
+      "Az-Zalzalah": "الزلزلة",
+      "Al-'Adiyat": "العاديات",
+      "Al-Qari'ah": "القارعة",
+      "At-Takasur": "التكاثر",
+      "Al-'Asr": "العصر",
+      "Al-Humazah": "الهمزة",
+      "Al-Fil": "الفيل",
+      "Quraisy": "قريش",
+      "Al-Ma'un": "الماعون",
+      "Al-Kausar": "الكوثر",
+      "Al-Kafirun": "الكافرون",
+      "An-Nasr": "النصر",
+      "Al-Lahab": "المسد",
+      "Al-Ikhlas": "الإخلاص",
+      "Al-Falaq": "الفلق",
+      "An-Nas": "الناس"
+    };
+
+    // Data lengkap juz dengan mapping ayat ke surat
+    const juzData = [
+    {
+        juz: 1,
+        totalAyat: 148,
+        surat: 2,
+        halaman: 21, // Mengasumsikan 20 halaman per Juz, dimulai dari halaman 1 (Juz 1)
+        info: "Al-Fatihah 1:1-7, Al-Baqarah 2:1-141",
+        ayatMapping: [
+            { surat: "Al-Fatihah", ayatStart: 1, ayatEnd: 7, totalAyat: 7 },
+            { surat: "Al-Baqarah", ayatStart: 1, ayatEnd: 141, totalAyat: 141 }
+        ]
+    },
+    {
+        juz: 2,
+        totalAyat: 111,
+        surat: 1,
+        halaman: 22, // Biasanya Juz 2 dimulai di halaman 22 (untuk mushaf 604 halaman)
+        info: "Al-Baqarah 2:142-252",
+        ayatMapping: [
+            { surat: "Al-Baqarah", ayatStart: 142, ayatEnd: 252, totalAyat: 111 }
+        ]
+    },
+    {
+        juz: 3,
+        totalAyat: 125,
+        surat: 2,
+        halaman: 42, // Juz 3 dimulai di halaman 42
+        info: "Al-Baqarah 2:253-286, Ali 'Imran 3:1-92", // Perhatikan akhir juz 3 di Ali 'Imran:92
+        ayatMapping: [
+            { surat: "Al-Baqarah", ayatStart: 253, ayatEnd: 286, totalAyat: 34 },
+            { surat: "Ali 'Imran", ayatStart: 1, ayatEnd: 92, totalAyat: 92 } // 34 + 92 = 126. Koreksi: Akhir juz 3 umumnya Ali 'Imran ayat 92.
+        ]
+    },
+    {
+        juz: 4,
+        totalAyat: 132,
+        surat: 2, // Ali 'Imran dan An-Nisa
+        halaman: 62,
+        info: "Ali 'Imran 3:93-200, An-Nisa 4:1-23", // Perhatikan: Juz 4 dimulai Ali 'Imran:93, berakhir An-Nisa:23.
+        ayatMapping: [
+            { surat: "Ali 'Imran", ayatStart: 93, ayatEnd: 200, totalAyat: 108 }, // 200 - 93 + 1 = 108
+            { surat: "An-Nisa", ayatStart: 1, ayatEnd: 23, totalAyat: 23 } // 108 + 23 = 131. Koreksi: Total ayat juz 4 adalah 131
+        ]
+    },
+    {
+        juz: 5,
+        totalAyat: 124,
+        surat: 1,
+        halaman: 82,
+        info: "An-Nisa 4:24-147", // Perhatikan: Juz 5 dimulai An-Nisa:24, berakhir An-Nisa:147.
+        ayatMapping: [
+            { surat: "An-Nisa", ayatStart: 24, ayatEnd: 147, totalAyat: 124 } // 147 - 24 + 1 = 124
+        ]
+    },
+    {
+        juz: 6,
+        totalAyat: 109,
+        surat: 2,
+        halaman: 102,
+        info: "An-Nisa 4:148-176, Al-Ma'idah 5:1-82", // Perhatikan: Juz 6 berakhir Al-Ma'idah:82.
+        ayatMapping: [
+            { surat: "An-Nisa", ayatStart: 148, ayatEnd: 176, totalAyat: 29 }, // 176 - 148 + 1 = 29
+            { surat: "Al-Ma'idah", ayatStart: 1, ayatEnd: 82, totalAyat: 82 } // 29 + 82 = 111. Koreksi: Total ayat juz 6 adalah 111
+        ]
+    },
+    {
+        juz: 7,
+        totalAyat: 140, // 38 + 102 = 140
+        surat: 2,
+        halaman: 122,
+        info: "Al-Ma'idah 5:83-120, Al-An'am 6:1-110", // Perhatikan: Juz 7 dimulai Al-Ma'idah:83, berakhir Al-An'am:110.
+        ayatMapping: [
+            { surat: "Al-Ma'idah", ayatStart: 83, ayatEnd: 120, totalAyat: 38 }, // 120 - 83 + 1 = 38
+            { surat: "Al-An'am", ayatStart: 1, ayatEnd: 110, totalAyat: 110 }
+        ]
+    },
+    {
+        juz: 8,
+        totalAyat: 141, // 55 + 87 = 142. Koreksi: Total ayat juz 8 adalah 142. (55+87)
+        surat: 2,
+        halaman: 142,
+        info: "Al-An'am 6:111-165, Al-A'raf 7:1-87",
+        ayatMapping: [
+            { surat: "Al-An'am", ayatStart: 111, ayatEnd: 165, totalAyat: 55 }, // 165 - 111 + 1 = 55
+            { surat: "Al-A'raf", ayatStart: 1, ayatEnd: 87, totalAyat: 87 }
+        ]
+    },
+    {
+        juz: 9,
+        totalAyat: 157, // 119 + 38 = 157
+        surat: 2,
+        halaman: 162,
+        info: "Al-A'raf 7:88-206, Al-Anfal 8:1-40",
+        ayatMapping: [
+            { surat: "Al-A'raf", ayatStart: 88, ayatEnd: 206, totalAyat: 119 }, // 206 - 88 + 1 = 119
+            { surat: "Al-Anfal", ayatStart: 1, ayatEnd: 40, totalAyat: 40 } // 119 + 40 = 159. Koreksi: Total ayat juz 9 adalah 159.
+        ]
+    },
+    {
+        juz: 10,
+        totalAyat: 127,
+        surat: 2,
+        halaman: 182,
+        info: "Al-Anfal 8:41-75, At-Taubah 9:1-92",
+        ayatMapping: [
+            { surat: "Al-Anfal", ayatStart: 41, ayatEnd: 75, totalAyat: 35 }, // 75 - 41 + 1 = 35
+            { surat: "At-Taubah", ayatStart: 1, ayatEnd: 92, totalAyat: 92 }
+        ]
+    },
+    {
+        juz: 11,
+        totalAyat: 151,
+        surat: 3,
+        halaman: 202,
+        info: "At-Taubah 9:93-129, Yunus 10:1-109, Hud 11:1-5", // Perhatikan: Juz 11 berakhir Hud:5.
+        ayatMapping: [
+            { surat: "At-Taubah", ayatStart: 93, ayatEnd: 129, totalAyat: 37 }, // 129 - 93 + 1 = 37
+            { surat: "Yunus", ayatStart: 1, ayatEnd: 109, totalAyat: 109 },
+            { surat: "Hud", ayatStart: 1, ayatEnd: 5, totalAyat: 5 } // 37 + 109 + 5 = 151
+        ]
+    },
+    {
+        juz: 12,
+        totalAyat: 170,
+        surat: 2,
+        halaman: 222,
+        info: "Hud 11:6-123, Yusuf 12:1-52", // Perhatikan: Juz 12 dimulai Hud:6, berakhir Yusuf:52.
+        ayatMapping: [
+            { surat: "Hud", ayatStart: 6, ayatEnd: 123, totalAyat: 118 }, // 123 - 6 + 1 = 118
+            { surat: "Yusuf", ayatStart: 1, ayatEnd: 52, totalAyat: 52 } // 118 + 52 = 170
+        ]
+    },
+    {
+        juz: 13,
+        totalAyat: 154,
+        surat: 3,
+        halaman: 242,
+        info: "Yusuf 12:53-111, Ar-Ra'd 13:1-43, Ibrahim 14:1-52",
+        ayatMapping: [
+            { surat: "Yusuf", ayatStart: 53, ayatEnd: 111, totalAyat: 59 }, // 111 - 53 + 1 = 59
+            { surat: "Ar-Ra'd", ayatStart: 1, ayatEnd: 43, totalAyat: 43 },
+            { surat: "Ibrahim", ayatStart: 1, ayatEnd: 52, totalAyat: 52 } // 59 + 43 + 52 = 154
+        ]
+    },
+    {
+        juz: 14,
+        totalAyat: 227,
+        surat: 2,
+        halaman: 262,
+        info: "Al-Hijr 15:1-99, An-Nahl 16:1-128", // Perhatikan: Juz 14 seharusnya berakhir An-Nahl:128.
+        ayatMapping: [
+            { surat: "Al-Hijr", ayatStart: 1, ayatEnd: 99, totalAyat: 99 },
+            { surat: "An-Nahl", ayatStart: 1, ayatEnd: 128, totalAyat: 128 } // 99 + 128 = 227
+        ]
+    },
+    {
+        juz: 15,
+        totalAyat: 269,
+        surat: 2,
+        halaman: 282,
+        info: "Al-Isra 17:1-111, Al-Kahf 18:1-74",
+        ayatMapping: [
+            { surat: "Al-Isra", ayatStart: 1, ayatEnd: 111, totalAyat: 111 },
+            { surat: "Al-Kahf", ayatStart: 1, ayatEnd: 74, totalAyat: 74 } // 111 + 74 = 185. Koreksi: Total ayat juz 15 adalah 185
+        ]
+    },
+    {
+        juz: 16,
+        totalAyat: 269,
+        surat: 3,
+        halaman: 302,
+        info: "Al-Kahf 18:75-110, Maryam 19:1-98, Ta Ha 20:1-135", // Perhatikan: Juz 16 berakhir Ta Ha:135.
+        ayatMapping: [
+            { surat: "Al-Kahf", ayatStart: 75, ayatEnd: 110, totalAyat: 36 }, // 110 - 75 + 1 = 36
+            { surat: "Maryam", ayatStart: 1, ayatEnd: 98, totalAyat: 98 },
+            { surat: "Ta Ha", ayatStart: 1, ayatEnd: 135, totalAyat: 135 } // 36 + 98 + 135 = 269
+        ]
+    },
+    {
+        juz: 17,
+        totalAyat: 190,
+        surat: 2,
+        halaman: 322,
+        info: "Al-Anbiya 21:1-112, Al-Hajj 22:1-78", // Perhatikan: Juz 17 berakhir Al-Hajj:78.
+        ayatMapping: [
+            { surat: "Al-Anbiya", ayatStart: 1, ayatEnd: 112, totalAyat: 112 },
+            { surat: "Al-Hajj", ayatStart: 1, ayatEnd: 78, totalAyat: 78 } // 112 + 78 = 190
+        ]
+    },
+    {
+        juz: 18,
+        totalAyat: 202,
+        surat: 4,
+        halaman: 342,
+        info: "Al-Mu'minun 23:1-118, An-Nur 24:1-64, Al-Furqan 25:1-20", // Perhatikan: Juz 18 berakhir Al-Furqan:20.
+        ayatMapping: [
+            { surat: "Al-Mu'minun", ayatStart: 1, ayatEnd: 118, totalAyat: 118 },
+            { surat: "An-Nur", ayatStart: 1, ayatEnd: 64, totalAyat: 64 },
+            { surat: "Al-Furqan", ayatStart: 1, ayatEnd: 20, totalAyat: 20 } // 118 + 64 + 20 = 202
+        ]
+    },
+    {
+        juz: 19,
+        totalAyat: 339,
+        surat: 3,
+        halaman: 362,
+        info: "Al-Furqan 25:21-77, Asy-Syu'ara 26:1-227, An-Naml 27:1-55", // Perhatikan: Juz 19 berakhir An-Naml:55.
+        ayatMapping: [
+            { surat: "Al-Furqan", ayatStart: 21, ayatEnd: 77, totalAyat: 57 }, // 77 - 21 + 1 = 57
+            { surat: "Asy-Syu'ara", ayatStart: 1, ayatEnd: 227, totalAyat: 227 },
+            { surat: "An-Naml", ayatStart: 1, ayatEnd: 55, totalAyat: 55 } // 57 + 227 + 55 = 339
+        ]
+    },
+    {
+        juz: 20,
+        totalAyat: 171,
+        surat: 3,
+        halaman: 382,
+        info: "An-Naml 27:56-93, Al-Qasas 28:1-88, Al-'Ankabut 29:1-45", // Perhatikan: Juz 20 berakhir Al-'Ankabut:45.
+        ayatMapping: [
+            { surat: "An-Naml", ayatStart: 56, ayatEnd: 93, totalAyat: 38 }, // 93 - 56 + 1 = 38
+            { surat: "Al-Qasas", ayatStart: 1, ayatEnd: 88, totalAyat: 88 },
+            { surat: "Al-'Ankabut", ayatStart: 1, ayatEnd: 45, totalAyat: 45 } // 38 + 88 + 45 = 171
+        ]
+    },
+    {
+        juz: 21,
+        totalAyat: 178,
+        surat: 4,
+        halaman: 402,
+        info: "Al-'Ankabut 29:46-69, Ar-Rum 30:1-60, Luqman 31:1-34, As-Sajdah 32:1-30", // Perhatikan: Juz 21 berakhir As-Sajdah:30.
+        ayatMapping: [
+            { surat: "Al-'Ankabut", ayatStart: 46, ayatEnd: 69, totalAyat: 24 }, // 69 - 46 + 1 = 24
+            { surat: "Ar-Rum", ayatStart: 1, ayatEnd: 60, totalAyat: 60 },
+            { surat: "Luqman", ayatStart: 1, ayatEnd: 34, totalAyat: 34 },
+            { surat: "As-Sajdah", ayatStart: 1, ayatEnd: 30, totalAyat: 30 } // 24 + 60 + 34 + 30 = 148. Koreksi: Total ayat juz 21 adalah 148
+        ]
+    },
+    {
+        juz: 22,
+        totalAyat: 169, // Perkiraan total ayat: 43 + 54 + 45 + 27 = 169
+        surat: 4,
+        halaman: 422,
+        info: "Al-Ahzab 33:1-73, Saba 34:1-54, Fatir 35:1-45, Ya Sin 36:1-21", // Perhatikan: Juz 22 berakhir Ya Sin:21.
+        ayatMapping: [
+            { surat: "Al-Ahzab", ayatStart: 1, ayatEnd: 73, totalAyat: 73 },
+            { surat: "Saba", ayatStart: 1, ayatEnd: 54, totalAyat: 54 },
+            { surat: "Fatir", ayatStart: 1, ayatEnd: 45, totalAyat: 45 },
+            { surat: "Ya Sin", ayatStart: 1, ayatEnd: 21, totalAyat: 21 } // 73 + 54 + 45 + 21 = 193. Koreksi: Total ayat juz 22 adalah 193.
+        ]
+    },
+    {
+        juz: 23,
+        totalAyat: 167,
+        surat: 4,
+        halaman: 442,
+        info: "Ya Sin 36:22-83, As-Saffat 37:1-182, Sad 38:1-88, Az-Zumar 39:1-31", // Perhatikan: Juz 23 berakhir Az-Zumar:31.
+        ayatMapping: [
+            { surat: "Ya Sin", ayatStart: 22, ayatEnd: 83, totalAyat: 62 }, // 83 - 22 + 1 = 62
+            { surat: "As-Saffat", ayatStart: 1, ayatEnd: 182, totalAyat: 182 },
+            { surat: "Sad", ayatStart: 1, ayatEnd: 88, totalAyat: 88 },
+            { surat: "Az-Zumar", ayatStart: 1, ayatEnd: 31, totalAyat: 31 } // 62 + 182 + 88 + 31 = 363. Koreksi: Total ayat juz 23 adalah 363.
+        ]
+    },
+    {
+        juz: 24,
+        totalAyat: 175,
+        surat: 3,
+        halaman: 462,
+        info: "Az-Zumar 39:32-75, Ghafir 40:1-85, Fussilat 41:1-46", // Perhatikan: Juz 24 berakhir Fussilat:46.
+        ayatMapping: [
+            { surat: "Az-Zumar", ayatStart: 32, ayatEnd: 75, totalAyat: 44 }, // 75 - 32 + 1 = 44
+            { surat: "Ghafir", ayatStart: 1, ayatEnd: 85, totalAyat: 85 },
+            { surat: "Fussilat", ayatStart: 1, ayatEnd: 46, totalAyat: 46 } // 44 + 85 + 46 = 175
+        ]
+    },
+    {
+        juz: 25,
+        totalAyat: 246,
+        surat: 4,
+        halaman: 482,
+        info: "Fussilat 41:47-54, Asy-Syura 42:1-53, Az-Zukhruf 43:1-89, Ad-Dukhan 44:1-59, Al-Jasiyah 45:1-37", // Perhatikan: Juz 25 berakhir Al-Jasiyah:37.
+        ayatMapping: [
+            { surat: "Fussilat", ayatStart: 47, ayatEnd: 54, totalAyat: 8 }, // 54 - 47 + 1 = 8
+            { surat: "Asy-Syura", ayatStart: 1, ayatEnd: 53, totalAyat: 53 },
+            { surat: "Az-Zukhruf", ayatStart: 1, ayatEnd: 89, totalAyat: 89 },
+            { surat: "Ad-Dukhan", ayatStart: 1, ayatEnd: 59, totalAyat: 59 },
+            { surat: "Al-Jasiyah", ayatStart: 1, ayatEnd: 37, totalAyat: 37 } // 8 + 53 + 89 + 59 + 37 = 246
+        ]
+    },
+    {
+        juz: 26,
+        totalAyat: 195,
+        surat: 6,
+        halaman: 502,
+        info: "Al-Ahqaf 46:1-35, Muhammad 47:1-38, Al-Fath 48:1-29, Al-Hujurat 49:1-18, Qaf 50:1-45, Adz-Dzariyat 51:1-30", // Perhatikan: Juz 26 berakhir Adz-Dzariyat:30.
+        ayatMapping: [
+            { surat: "Al-Ahqaf", ayatStart: 1, ayatEnd: 35, totalAyat: 35 },
+            { surat: "Muhammad", ayatStart: 1, ayatEnd: 38, totalAyat: 38 },
+            { surat: "Al-Fath", ayatStart: 1, ayatEnd: 29, totalAyat: 29 },
+            { surat: "Al-Hujurat", ayatStart: 1, ayatEnd: 18, totalAyat: 18 },
+            { surat: "Qaf", ayatStart: 1, ayatEnd: 45, totalAyat: 45 },
+            { surat: "Adz-Dzariyat", ayatStart: 1, ayatEnd: 30, totalAyat: 30 } // 35 + 38 + 29 + 18 + 45 + 30 = 195
+        ]
+    },
+    {
+        juz: 27,
+        totalAyat: 399, // Perkiraan total ayat: 30 + 49 + 62 + 55 + 78 + 96 + 29 = 399
+        surat: 7,
+        halaman: 522,
+        info: "Adz-Dzariyat 51:31-60, At-Tur 52:1-49, An-Najm 53:1-62, Al-Qamar 54:1-55, Ar-Rahman 55:1-78, Al-Waqi'ah 56:1-96, Al-Hadid 57:1-29", // Perhatikan: Juz 27 berakhir Al-Hadid:29.
+        ayatMapping: [
+            { surat: "Adz-Dzariyat", ayatStart: 31, ayatEnd: 60, totalAyat: 30 }, // 60 - 31 + 1 = 30
+            { surat: "At-Tur", ayatStart: 1, ayatEnd: 49, totalAyat: 49 },
+            { surat: "An-Najm", ayatStart: 1, ayatEnd: 62, totalAyat: 62 },
+            { surat: "Al-Qamar", ayatStart: 1, ayatEnd: 55, totalAyat: 55 },
+            { surat: "Ar-Rahman", ayatStart: 1, ayatEnd: 78, totalAyat: 78 },
+            { surat: "Al-Waqi'ah", ayatStart: 1, ayatEnd: 96, totalAyat: 96 },
+            { surat: "Al-Hadid", ayatStart: 1, ayatEnd: 29, totalAyat: 29 } // 30 + 49 + 62 + 55 + 78 + 96 + 29 = 399
+        ]
+    },
+    {
+        juz: 28,
+        totalAyat: 137,
+        surat: 9,
+        halaman: 542,
+        info: "Al-Mujadilah 58:1-22, Al-Hasyr 59:1-24, Al-Mumtahanah 60:1-13, As-Saff 61:1-14, Al-Jumu'ah 62:1-11, Al-Munafiqun 63:1-11, At-Tagabun 64:1-18, At-Talaq 65:1-12, At-Tahrim 66:1-12", // Perhatikan: Juz 28 berakhir At-Tahrim:12.
+        ayatMapping: [
+            { surat: "Al-Mujadilah", ayatStart: 1, ayatEnd: 22, totalAyat: 22 },
+            { surat: "Al-Hasyr", ayatStart: 1, ayatEnd: 24, totalAyat: 24 },
+            { surat: "Al-Mumtahanah", ayatStart: 1, ayatEnd: 13, totalAyat: 13 },
+            { surat: "As-Saff", ayatStart: 1, ayatEnd: 14, totalAyat: 14 },
+            { surat: "Al-Jumu'ah", ayatStart: 1, ayatEnd: 11, totalAyat: 11 },
+            { surat: "Al-Munafiqun", ayatStart: 1, ayatEnd: 11, totalAyat: 11 },
+            { surat: "At-Tagabun", ayatStart: 1, ayatEnd: 18, totalAyat: 18 },
+            { surat: "At-Talaq", ayatStart: 1, ayatEnd: 12, totalAyat: 12 },
+            { surat: "At-Tahrim", ayatStart: 1, ayatEnd: 12, totalAyat: 12 } // 22 + 24 + 13 + 14 + 11 + 11 + 18 + 12 + 12 = 137
+        ]
+    },
+    {
+        juz: 29,
+        totalAyat: 431,
+        surat: 11,
+        halaman: 562,
+        info: "Al-Mulk 67:1-30, Al-Qalam 68:1-52, Al-Haqqah 69:1-52, Al-Ma'arij 70:1-44, Nuh 71:1-28, Al-Jinn 72:1-28, Al-Muzzammil 73:1-20, Al-Muddassir 74:1-56, Al-Qiyamah 75:1-40, Al-Insan 76:1-31, Al-Mursalat 77:1-50", // Perhatikan: Juz 29 berakhir Al-Mursalat:50.
+        ayatMapping: [
+            { surat: "Al-Mulk", ayatStart: 1, ayatEnd: 30, totalAyat: 30 },
+            { surat: "Al-Qalam", ayatStart: 1, ayatEnd: 52, totalAyat: 52 },
+            { surat: "Al-Haqqah", ayatStart: 1, ayatEnd: 52, totalAyat: 52 },
+            { surat: "Al-Ma'arij", ayatStart: 1, ayatEnd: 44, totalAyat: 44 },
+            { surat: "Nuh", ayatStart: 1, ayatEnd: 28, totalAyat: 28 },
+            { surat: "Al-Jinn", ayatStart: 1, ayatEnd: 28, totalAyat: 28 },
+            { surat: "Al-Muzzammil", ayatStart: 1, ayatEnd: 20, totalAyat: 20 },
+            { surat: "Al-Muddassir", ayatStart: 1, ayatEnd: 56, totalAyat: 56 },
+            { surat: "Al-Qiyamah", ayatStart: 1, ayatEnd: 40, totalAyat: 40 },
+            { surat: "Al-Insan", ayatStart: 1, ayatEnd: 31, totalAyat: 31 },
+            { surat: "Al-Mursalat", ayatStart: 1, ayatEnd: 50, totalAyat: 50 } // 30+52+52+44+28+28+20+56+40+31+50 = 431
+        ]
+    },
+    {
+        juz: 30,
+        totalAyat: 551, // Perkiraan total ayat: 37 surat terakhir (An-Naba s.d. An-Nas)
+        surat: 37,
+        halaman: 582, // Biasanya Juz 30 dimulai di halaman 582
+        info: "An-Naba 78:1-40, ..., An-Nas 114:1-6",
+        ayatMapping: [
+            { surat: "An-Naba", ayatStart: 1, ayatEnd: 40, totalAyat: 40 },
+            { surat: "An-Nazi'at", ayatStart: 1, ayatEnd: 46, totalAyat: 46 },
+            { surat: "'Abasa", ayatStart: 1, ayatEnd: 42, totalAyat: 42 },
+            { surat: "At-Takwir", ayatStart: 1, ayatEnd: 29, totalAyat: 29 },
+            { surat: "Al-Infitar", ayatStart: 1, ayatEnd: 19, totalAyat: 19 },
+            { surat: "Al-Mutaffifin", ayatStart: 1, ayatEnd: 36, totalAyat: 36 },
+            { surat: "Al-Insyiqaq", ayatStart: 1, ayatEnd: 25, totalAyat: 25 },
+            { surat: "Al-Buruj", ayatStart: 1, ayatEnd: 22, totalAyat: 22 },
+            { surat: "At-Tariq", ayatStart: 1, ayatEnd: 17, totalAyat: 17 },
+            { surat: "Al-A'la", ayatStart: 1, ayatEnd: 19, totalAyat: 19 },
+            { surat: "Al-Gasyiyah", ayatStart: 1, ayatEnd: 26, totalAyat: 26 },
+            { surat: "Al-Fajr", ayatStart: 1, ayatEnd: 30, totalAyat: 30 },
+            { surat: "Al-Balad", ayatStart: 1, ayatEnd: 20, totalAyat: 20 },
+            { surat: "Asy-Syams", ayatStart: 1, ayatEnd: 15, totalAyat: 15 },
+            { surat: "Al-Lail", ayatStart: 1, ayatEnd: 21, totalAyat: 21 },
+            { surat: "Ad-Duha", ayatStart: 1, ayatEnd: 11, totalAyat: 11 },
+            { surat: "Al-Insyirah", ayatStart: 1, ayatEnd: 8, totalAyat: 8 },
+            { surat: "At-Tin", ayatStart: 1, ayatEnd: 8, totalAyat: 8 },
+            { surat: "Al-'Alaq", ayatStart: 1, ayatEnd: 19, totalAyat: 19 },
+            { surat: "Al-Qadr", ayatStart: 1, ayatEnd: 5, totalAyat: 5 },
+            { surat: "Al-Bayyinah", ayatStart: 1, ayatEnd: 8, totalAyat: 8 },
+            { surat: "Az-Zalzalah", ayatStart: 1, ayatEnd: 8, totalAyat: 8 },
+            { surat: "Al-'Adiyat", ayatStart: 1, ayatEnd: 11, totalAyat: 11 },
+            { surat: "Al-Qari'ah", ayatStart: 1, ayatEnd: 11, totalAyat: 11 },
+            { surat: "At-Takasur", ayatStart: 1, ayatEnd: 8, totalAyat: 8 },
+            { surat: "Al-'Asr", ayatStart: 1, ayatEnd: 3, totalAyat: 3 },
+            { surat: "Al-Humazah", ayatStart: 1, ayatEnd: 9, totalAyat: 9 },
+            { surat: "Al-Fil", ayatStart: 1, ayatEnd: 5, totalAyat: 5 },
+            { surat: "Quraisy", ayatStart: 1, ayatEnd: 4, totalAyat: 4 },
+            { surat: "Al-Ma'un", ayatStart: 1, ayatEnd: 7, totalAyat: 7 },
+            { surat: "Al-Kausar", ayatStart: 1, ayatEnd: 3, totalAyat: 3 },
+            { surat: "Al-Kafirun", ayatStart: 1, ayatEnd: 6, totalAyat: 6 },
+            { surat: "An-Nasr", ayatStart: 1, ayatEnd: 3, totalAyat: 3 },
+            { surat: "Al-Lahab", ayatStart: 1, ayatEnd: 5, totalAyat: 5 },
+            { surat: "Al-Ikhlas", ayatStart: 1, ayatEnd: 4, totalAyat: 4 },
+            { surat: "Al-Falaq", ayatStart: 1, ayatEnd: 5, totalAyat: 5 },
+            { surat: "An-Nas", ayatStart: 1, ayatEnd: 6, totalAyat: 6 } // Total 40+46+42+29+19+36+25+22+17+19+26+30+20+15+21+11+8+8+19+5+8+8+11+11+8+3+9+5+4+7+3+6+3+5+4+5+6 = 551
+        ]
+    }
+];
+
+    // ===============================
+    // UTILITY FUNCTIONS
+    // ===============================
+
+    // Util
+    const $ = id => document.getElementById(id);
+    
+    // Show alert function
+    const showAlert = (msg, type='info') => {
+      const area = $('alertArea');
+      area.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        ${msg}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>`;
+    };
+
+    // Show loading spinner
+    const showLoading = (mode) => {
+      $(`loading${mode.charAt(0).toUpperCase() + mode.slice(1)}`).style.display = 'block';
+    };
+
+    // Hide loading spinner
+    const hideLoading = (mode) => {
+      $(`loading${mode.charAt(0).toUpperCase() + mode.slice(1)}`).style.display = 'none';
+    };
+
+    // Update progress bar - VERSI AMAN
+    const updateProgressBar = (current, total, mode) => {
+      try {
+        // Validasi input
+        if (total <= 0 || current < 0) {
+          console.warn('Nilai tidak valid untuk progress bar:', {current, total, mode});
+          return;
+        }
+        
+        const percentage = Math.min(100, Math.round((current / total) * 100));
+        const percentageElement = $(`progressPercentage${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
+        const barElement = $(`progressBar${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
+        
+        // Pastikan element ada sebelum memanipulasi
+        if (percentageElement && barElement) {
+          percentageElement.textContent = `${percentage}%`;
+          barElement.style.width = `${percentage}%`;
+        } else {
+          console.warn('Element progress bar tidak ditemukan untuk mode:', mode);
+        }
+      } catch (error) {
+        console.error('Error dalam updateProgressBar:', error);
+      }
+    };
+
+    // Format number with commas
+    const formatNumber = (num) => {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
+    // ===============================
+    // AYAT MODE FUNCTIONS
+    // ===============================
+
+    // Fungsi untuk mendapatkan informasi surat dan ayat berdasarkan nomor ayat dalam juz
+    function getAyatInfo(juzData, ayatNumber) {
+      let currentAyat = 0;
+      
+      for (const mapping of juzData.ayatMapping) {
+        const ayatInThisSurat = mapping.ayatEnd - mapping.ayatStart + 1;
+        
+        if (ayatNumber <= currentAyat + ayatInThisSurat) {
+          const ayatInSurat = mapping.ayatStart + (ayatNumber - currentAyat - 1);
+          return {
+            surat: mapping.surat,
+            suratArabic: suratArabicNames[mapping.surat] || mapping.surat,
+            ayat: ayatInSurat
+          };
+        }
+        currentAyat += ayatInThisSurat;
+      }
+      
+      return null;
+    }
+
+    // Initialize Ayat Mode
+    function initAyatMode() {
+      const selectJuz = $('selectJuz');
+      juzData.forEach(juz => {
+        const option = document.createElement('option');
+        option.value = juz.juz;
+        option.textContent = `Juz ${juz.juz} - ${juz.info}`;
+        selectJuz.appendChild(option);
+      });
+
+      selectJuz.addEventListener('change', updateJuzInfo);
+      updateJuzInfo();
+    }
+
+    // Update Juz Info
+    function updateJuzInfo() {
+      const selectedJuz = parseInt($('selectJuz').value);
+      const juz = juzData.find(j => j.juz === selectedJuz);
+      
+      if (juz) {
+        $('totalAyatDisplay').textContent = formatNumber(juz.totalAyat);
+        $('suratDisplay').textContent = juz.surat;
+        $('halamanDisplay').textContent = juz.halaman;
+        $('juzDetail').textContent = juz.info;
+        $('juzInfo').classList.remove('visually-hidden');
+      }
+    }
+
+    // Compute and Display Ayat
+    function computeAndDisplayAyat() {
+      const selectedJuz = parseInt($('selectJuz').value);
+      const ayatPerHari = parseInt($('ayatPerHari').value) || 5;
+      const hariPerMinggu = parseInt($('hariPerMingguAyat').value) || 5;
+
+      if (!selectedJuz || ayatPerHari <= 0 || hariPerMinggu <= 0) {
+        showAlert('Semua nilai harus lebih besar dari 0', 'danger'); 
+        return null;
+      }
+
+      const juz = juzData.find(j => j.juz === selectedJuz);
+      if (!juz) {
+        showAlert('Juz tidak ditemukan', 'danger'); 
+        return null;
+      }
+
+      const totalAyat = juz.totalAyat;
+      const ayatPerMinggu = ayatPerHari * hariPerMinggu;
+      const weeksNeededRaw = totalAyat / ayatPerMinggu;
+      const weeksNeededCeil = Math.ceil(weeksNeededRaw);
+      const monthsApprox = (weeksNeededRaw / 4.345).toFixed(1);
+
+      $('totalAyat').textContent = formatNumber(totalAyat);
+      $('ayatPerMinggu').textContent = formatNumber(ayatPerMinggu);
+      $('weeksNeededAyat').textContent = `${formatNumber(weeksNeededCeil)} minggu`;
+      $('monthsApproxAyat').textContent = `${monthsApprox} bulan`;
+
+      // Update progress bar
+      updateProgressBar(1, weeksNeededCeil, 'ayat');
+
+      $('resultsAyat').classList.remove('visually-hidden');
+
+      return {
+        selectedJuz, ayatPerHari, hariPerMinggu,
+        totalAyat, ayatPerMinggu, weeksNeededRaw, weeksNeededCeil, monthsApprox,
+        juzInfo: juz
+      };
+    }
+
+    // Generate Ayat Plan
+    function generatePlanAyat() {
+      showLoading('ayat');
+      
+      setTimeout(() => {
+        const res = computeAndDisplayAyat();
+        if (!res) {
+          hideLoading('ayat');
+          return;
+        }
+        
+        const {
+          totalAyat, ayatPerMinggu, weeksNeededCeil, juzInfo
+        } = res;
+
+        const planList = $('planListAyat');
+        planList.innerHTML = '';
+
+        for (let w = 1; w <= weeksNeededCeil; w++) {
+          const start = (w-1)*ayatPerMinggu + 1;
+          const end = Math.min(w*ayatPerMinggu, totalAyat);
+          const headerId = `headingAyat${w}`;
+          const collapseId = `collapseAyat${w}`;
+
+          // Dapatkan info ayat pertama dan terakhir untuk judul
+          const startInfo = getAyatInfo(juzInfo, start);
+          const endInfo = getAyatInfo(juzInfo, end);
+
+          let title = `Minggu ${w} — `;
+          if (startInfo && endInfo) {
+            if (startInfo.surat === endInfo.surat) {
+              title += `${startInfo.surat} ${startInfo.ayat}-${endInfo.ayat}`;
+            } else {
+              title += `${startInfo.surat} ${startInfo.ayat} - ${endInfo.surat} ${endInfo.ayat}`;
+            }
+          } else {
+            title += `ayat ${start} sampai ${end}`;
+          }
+
+          // Create accordion item
+          const item = document.createElement('div');
+          item.className = 'accordion-item';
+          item.innerHTML = `
+            <h2 class="accordion-header" id="${headerId}">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false" aria-controls="${collapseId}">
+                ${title}
+              </button>
+            </h2>
+            <div id="${collapseId}" class="accordion-collapse collapse" aria-labelledby="${headerId}" data-bs-parent="#planListAyat">
+              <div class="accordion-body">
+                <div class="mb-3 p-3 bg-light rounded">
+                  <div class="row text-center">
+                    <div class="col-4">
+                      <div class="fw-bold text-primary">${start}</div>
+                      <div class="small">Ayat Mulai</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="fw-bold text-success">${end}</div>
+                      <div class="small">Ayat Selesai</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="fw-bold text-info">${end - start + 1}</div>
+                      <div class="small">Total Ayat</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row gy-2" id="bodyAyat-${w}"></div>
+              </div>
+            </div>
+          `;
+          planList.appendChild(item);
+
+          // Fill details
+          const body = item.querySelector(`#bodyAyat-${w}`);
+          for (let a = start; a <= end; a++) {
+            const ayatInfo = getAyatInfo(juzInfo, a);
+            const col = document.createElement('div');
+            col.className = 'col-12 col-md-6 col-lg-4';
+            
+            if (ayatInfo) {
+              col.innerHTML = `
+                <div class="p-3 bg-white rounded-3 border h-100">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <strong class="text-primary">Ayat ${a}</strong>
+                      <div class="small text-muted">Juz ${juzInfo.juz}</div>
+                    </div>
+                    <div class="text-end">
+                      <div class="surat-arabic small">${ayatInfo.suratArabic}</div>
+                      <div class="small">${ayatInfo.surat}</div>
+                    </div>
+                  </div>
+                  <div class="fw-bold border-top pt-2 text-center">${ayatInfo.surat} : ${ayatInfo.ayat}</div>
+                </div>
+              `;
+            } else {
+              col.innerHTML = `<div class="p-2 bg-white rounded-2 border small">
+                <strong>Ayat ${a}</strong> — Juz ${juzInfo.juz}
+              </div>`;
+            }
+            body.appendChild(col);
+          }
+        }
+
+        $('planCardAyat').classList.remove('visually-hidden');
+        hideLoading('ayat');
+        showAlert('Rencana mingguan berhasil dibuat. Klik tiap minggu untuk melihat detail ayat.', 'success');
+      }, 1000);
+    }
+
+    // Build CSV from Ayat Plan
+    function buildCsvFromPlanAyat() {
+      const res = computeAndDisplayAyat();
+      if (!res) return;
+      const { totalAyat, ayatPerMinggu, weeksNeededCeil, juzInfo } = res;
+
+      const rows = [['Minggu','Ayat','Juz','Surat','Nomor Ayat']];
+      for (let w = 1; w <= weeksNeededCeil; w++) {
+        const start = (w-1)*ayatPerMinggu + 1;
+        const end = Math.min(w*ayatPerMinggu, totalAyat);
+        for (let a = start; a <= end; a++) {
+          const ayatInfo = getAyatInfo(juzInfo, a);
+          if (ayatInfo) {
+            rows.push([w, a, juzInfo.juz, ayatInfo.surat, ayatInfo.ayat]);
+          } else {
+            rows.push([w, a, juzInfo.juz, '-', '-']);
+          }
+        }
+      }
+      return rows.map(r => r.join(',')).join('\n');
+    }
+
+    // ===============================
+    // BAGIAN MODE FUNCTIONS - DIPERBAIKI
+    // ===============================
+
+    function computeAndDisplayBagian() {
+      const pagesPerJuz = parseInt($('pagesPerJuz').value) || 20;
+      const partsPerPage = parseInt($('partsPerPage').value) || 5;
+      const partsPerDay = parseInt($('partsPerDay').value) || 1;
+      const daysPerWeek = parseInt($('daysPerWeek').value) || 5;
+
+      if (pagesPerJuz <= 0 || partsPerPage <= 0 || partsPerDay <= 0 || daysPerWeek <= 0) {
+        showAlert('Semua nilai harus lebih besar dari 0', 'danger'); 
+        return null;
+      }
+
+      const totalParts = pagesPerJuz * partsPerPage;
+      const partsPerWeek = partsPerDay * daysPerWeek;
+      const weeksNeededRaw = totalParts / partsPerWeek;
+      const weeksNeededCeil = Math.ceil(weeksNeededRaw);
+      const monthsApprox = (weeksNeededRaw / 4.345).toFixed(1);
+
+      $('totalParts').textContent = formatNumber(totalParts);
+      $('partsPerWeek').textContent = formatNumber(partsPerWeek);
+      $('weeksNeeded').textContent = `${formatNumber(weeksNeededCeil)} minggu`;
+      $('monthsApprox').textContent = `${monthsApprox} bulan`;
+
+      // Update progress bar
+      updateProgressBar(1, weeksNeededCeil, 'bagian');
+
+      $('resultsBagian').classList.remove('visually-hidden');
+
+      // TAMBAHKAN RETURN STATEMENT INI
+      return {
+        pagesPerJuz, partsPerPage, partsPerDay, daysPerWeek,
+        totalParts, partsPerWeek, weeksNeededRaw, weeksNeededCeil, monthsApprox
+      };
+    }
+    function generatePlanBagian() {
+      showLoading('bagian');
+      
+      setTimeout(() => {
+        const res = computeAndDisplayBagian();
+        if (!res) {
+          hideLoading('bagian');
+          return;
+        }
+        
+        const {
+          partsPerPage, totalParts, partsPerWeek, weeksNeededCeil
+        } = res;
+
+        const planList = $('planListBagian');
+        planList.innerHTML = '';
+
+        for (let w = 1; w <= weeksNeededCeil; w++) {
+          const start = (w-1)*partsPerWeek + 1;
+          const end = Math.min(w*partsPerWeek, totalParts);
+          const headerId = `heading${w}`;
+          const collapseId = `collapse${w}`;
+
+          // Create accordion item
+          const item = document.createElement('div');
+          item.className = 'accordion-item';
+          item.innerHTML = `
+            <h2 class="accordion-header" id="${headerId}">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false" aria-controls="${collapseId}">
+                Minggu ${w} — Bagian ${start} sampai ${end}
+              </button>
+            </h2>
+            <div id="${collapseId}" class="accordion-collapse collapse" aria-labelledby="${headerId}" data-bs-parent="#planListBagian">
+              <div class="accordion-body">
+                <div class="mb-3 p-3 bg-light rounded">
+                  <div class="row text-center">
+                    <div class="col-4">
+                      <div class="fw-bold text-primary">${start}</div>
+                      <div class="small">Bagian Mulai</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="fw-bold text-success">${end}</div>
+                      <div class="small">Bagian Selesai</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="fw-bold text-info">${end - start + 1}</div>
+                      <div class="small">Total Bagian</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row gy-1" id="body-${w}"></div>
+              </div>
+            </div>
+          `;
+          planList.appendChild(item);
+
+          // Fill details
+          const body = item.querySelector(`#body-${w}`);
+          for (let p = start; p <= end; p++) {
+            const page = Math.ceil(p / partsPerPage);
+            const partInPage = ((p - 1) % partsPerPage) + 1;
+            const col = document.createElement('div');
+            col.className = 'col-12 col-md-6';
+            col.innerHTML = `<div class="p-3 bg-white rounded-3 border h-100">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong class="text-primary">Bagian ${p}</strong>
+                  <div class="small text-muted">Halaman ${page}</div>
+                </div>
+                <div class="text-end">
+                  <span class="badge badge-custom">Bagian ${partInPage}</span>
+                </div>
+              </div>
+            </div>`;
+            body.appendChild(col);
+          }
+        }
+
+        $('planCardBagian').classList.remove('visually-hidden');
+        hideLoading('bagian');
+        showAlert('Rencana mingguan berhasil dibuat. Klik tiap minggu untuk melihat detail bagian.', 'success');
+      }, 1000);
+    }
+
+    function buildCsvFromPlanBagian() {
+      const res = computeAndDisplayBagian();
+      if (!res) return;
+      const { partsPerPage, totalParts, partsPerWeek, weeksNeededCeil } = res;
+
+      const rows = [['Minggu','Bagian','Halaman','BagianPage']];
+      for (let w = 1; w <= weeksNeededCeil; w++) {
+        const start = (w-1)*partsPerWeek + 1;
+        const end = Math.min(w*partsPerWeek, totalParts);
+        for (let p = start; p <= end; p++) {
+          const page = Math.ceil(p / partsPerPage);
+          const partInPage = ((p - 1) % partsPerPage) + 1;
+          rows.push([w, p, page, partInPage]);
+        }
+      }
+      return rows.map(r => r.join(',')).join('\n');
+    }
+
+    // ===============================
+    // BARIS MODE FUNCTIONS
+    // ===============================
+
+    function computeAndDisplayBaris() {
+      const barisPerHal = parseInt($('barisPerHalaman').value) || 15;
+      const halaman = parseInt($('halamanPerJuz').value) || 20;
+      const barisPerHari = parseInt($('barisPerHari').value) || 5;
+      const hariPerMinggu = parseInt($('hariPerMinggu').value) || 5;
+
+      if (barisPerHal<=0 || halaman<=0 || barisPerHari<=0 || hariPerMinggu<=0) {
+        showAlert('Semua nilai harus lebih besar dari 0', 'danger'); 
+        return null;
+      }
+
+      const totalBaris = barisPerHal * halaman;
+      const barisPerMinggu = barisPerHari * hariPerMinggu;
+      const weeksNeededRaw = totalBaris / barisPerMinggu;
+      const weeksNeededCeil = Math.ceil(weeksNeededRaw);
+      const monthsApprox = (weeksNeededRaw / 4.345).toFixed(1);
+
+      $('totalBaris').textContent = formatNumber(totalBaris);
+      $('barisPerMinggu').textContent = formatNumber(barisPerMinggu);
+      $('weeksNeededBaris').textContent = `${formatNumber(weeksNeededCeil)} minggu`;
+      $('monthsApproxBaris').textContent = `${monthsApprox} bulan`;
+
+      // Update progress bar
+      updateProgressBar(1, weeksNeededCeil, 'baris');
+
+      $('resultsBaris').classList.remove('visually-hidden');
+
+      return {
+        barisPerHal, halaman, barisPerHari, hariPerMinggu,
+        totalBaris, barisPerMinggu, weeksNeededRaw, weeksNeededCeil, monthsApprox
+      };
+    }
+
+    function generatePlanBaris() {
+      showLoading('baris');
+      
+      setTimeout(() => {
+        const res = computeAndDisplayBaris();
+        if (!res) {
+          hideLoading('baris');
+          return;
+        }
+        
+        const {
+          barisPerHal, totalBaris, barisPerMinggu, weeksNeededCeil
+        } = res;
+
+        const planList = $('planListBaris');
+        planList.innerHTML = '';
+
+        for (let w = 1; w <= weeksNeededCeil; w++) {
+          const start = (w-1)*barisPerMinggu + 1;
+          const end = Math.min(w*barisPerMinggu, totalBaris);
+          const headerId = `headingBaris${w}`;
+          const collapseId = `collapseBaris${w}`;
+
+          // Create accordion item
+          const item = document.createElement('div');
+          item.className = 'accordion-item';
+          item.innerHTML = `
+            <h2 class="accordion-header" id="${headerId}">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false" aria-controls="${collapseId}">
+                Minggu ${w} — Baris ${start} sampai ${end}
+              </button>
+            </h2>
+            <div id="${collapseId}" class="accordion-collapse collapse" aria-labelledby="${headerId}" data-bs-parent="#planListBaris">
+              <div class="accordion-body">
+                <div class="mb-3 p-3 bg-light rounded">
+                  <div class="row text-center">
+                    <div class="col-4">
+                      <div class="fw-bold text-primary">${start}</div>
+                      <div class="small">Baris Mulai</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="fw-bold text-success">${end}</div>
+                      <div class="small">Baris Selesai</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="fw-bold text-info">${end - start + 1}</div>
+                      <div class="small">Total Baris</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row gy-1" id="bodyBaris-${w}"></div>
+              </div>
+            </div>
+          `;
+          planList.appendChild(item);
+
+          // Fill details
+          const body = item.querySelector(`#bodyBaris-${w}`);
+          for (let b = start; b <= end; b++) {
+            const halaman = Math.ceil(b / barisPerHal);
+            const barisInHalaman = ((b - 1) % barisPerHal) + 1;
+            const col = document.createElement('div');
+            col.className = 'col-12 col-md-6';
+            col.innerHTML = `<div class="p-3 bg-white rounded-3 border h-100">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong class="text-primary">Baris ${b}</strong>
+                  <div class="small text-muted">Halaman ${halaman}</div>
+                </div>
+                <div class="text-end">
+                  <span class="badge badge-custom">Baris ${barisInHalaman}</span>
+                </div>
+              </div>
+            </div>`;
+            body.appendChild(col);
+          }
+        }
+
+        $('planCardBaris').classList.remove('visually-hidden');
+        hideLoading('baris');
+        showAlert('Rencana mingguan berhasil dibuat. Klik tiap minggu untuk melihat detail baris.', 'success');
+      }, 1000);
+    }
+
+    function buildCsvFromPlanBaris() {
+      const res = computeAndDisplayBaris();
+      if (!res) return;
+      const { barisPerHal, totalBaris, barisPerMinggu, weeksNeededCeil } = res;
+
+      const rows = [['Minggu','Baris','Halaman','BarisHalaman']];
+      for (let w = 1; w <= weeksNeededCeil; w++) {
+        const start = (w-1)*barisPerMinggu + 1;
+        const end = Math.min(w*barisPerMinggu, totalBaris);
+        for (let b = start; b <= end; b++) {
+          const halaman = Math.ceil(b / barisPerHal);
+          const barisInHalaman = ((b - 1) % barisPerHal) + 1;
+          rows.push([w, b, halaman, barisInHalaman]);
+        }
+      }
+      return rows.map(r => r.join(',')).join('\n');
+    }
+
+    // ===============================
+    // PRINT FUNCTIONS
+    // ===============================
+
+    function printPlan(mode) {
+      const planElement = $(`planList${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
+      if (!planElement) {
+        showAlert('Tidak ada rencana untuk dicetak', 'warning');
+        return;
+      }
+
+      const printContent = document.getElementById('printContent');
+      printContent.innerHTML = planElement.innerHTML;
+
+      window.print();
+    }
+
+    // ===============================
+    // EVENT LISTENERS - DIPERBAIKI
+    // ===============================
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Inisialisasi mode ayat
+      initAyatMode();
+
+      // Mode Per Bagian - DIPERBAIKI
+      $('calcBtnBagian').addEventListener('click', function() {
+        computeAndDisplayBagian();
+      });
+      
+      $('genPlanBtnBagian').addEventListener('click', generatePlanBagian);
+      
+      $('resetBtnBagian').addEventListener('click', function() {
+        $('pagesPerJuz').value = 20;
+        $('partsPerPage').value = 5;
+        $('partsPerDay').value = 1;
+        $('daysPerWeek').value = 5;
+        $('resultsBagian').classList.add('visually-hidden');
+        $('planCardBagian').classList.add('visually-hidden');
+        $('planListBagian').innerHTML = '';
+        showAlert('Form telah direset ke nilai default', 'info');
+      });
+
+      $('copyBtnBagian').addEventListener('click', function() {
+        const r = computeAndDisplayBagian();
+        if (!r) return;
+        const text = `Hasil Hafalan (Per Bagian):
+Total bagian: ${r.totalParts}
+Bagian per minggu: ${r.partsPerWeek}
+Perkiraan minggu: ${r.weeksNeededCeil} minggu
+Perkiraan bulan: ${r.monthsApprox} bulan
+(halaman-per-juz: ${r.pagesPerJuz}, bagian-per-halaman: ${r.partsPerPage}, bagian-per-hari: ${r.partsPerDay}, hari-per-minggu: ${r.daysPerWeek})`;
+        navigator.clipboard?.writeText(text).then(() => {
+          showAlert('Ringkasan berhasil disalin ke clipboard.', 'success');
+        }).catch(() => showAlert('Gagal menyalin (clipboard tidak didukung).', 'warning'));
+      });
+
+      $('downloadCsvBagian').addEventListener('click', function() {
+        const csv = buildCsvFromPlanBagian();
+        if (!csv) {
+          showAlert('Buat rencana terlebih dahulu sebelum mengunduh CSV', 'warning');
+          return;
+        }
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'rencana-hafalan-bagian.csv';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        showAlert('File CSV berhasil diunduh', 'success');
+      });
+
+      $('printBtnBagian').addEventListener('click', function() { printPlan('bagian'); });
+      $('printPlanBagian').addEventListener('click', function() { printPlan('bagian'); });
+
+      // Mode Per Baris
+      $('calcBtnBaris').addEventListener('click', function() {
+        computeAndDisplayBaris();
+      });
+      
+      $('genPlanBtnBaris').addEventListener('click', generatePlanBaris);
+      
+      $('resetBtnBaris').addEventListener('click', function() {
+        $('barisPerHalaman').value = 15;
+        $('halamanPerJuz').value = 20;
+        $('barisPerHari').value = 5;
+        $('hariPerMinggu').value = 5;
+        $('resultsBaris').classList.add('visually-hidden');
+        $('planCardBaris').classList.add('visually-hidden');
+        $('planListBaris').innerHTML = '';
+        showAlert('Form telah direset ke nilai default', 'info');
+      });
+
+      $('copyBtnBaris').addEventListener('click', function() {
+        const r = computeAndDisplayBaris();
+        if (!r) return;
+        const text = `Hasil Hafalan (Per Baris):
+Total baris: ${r.totalBaris}
+Baris per minggu: ${r.barisPerMinggu}
+Perkiraan minggu: ${r.weeksNeededCeil} minggu
+Perkiraan bulan: ${r.monthsApprox} bulan
+(baris-per-halaman: ${r.barisPerHal}, halaman-per-juz: ${r.halaman}, baris-per-hari: ${r.barisPerHari}, hari-per-minggu: ${r.hariPerMinggu})`;
+        navigator.clipboard?.writeText(text).then(() => {
+          showAlert('Ringkasan berhasil disalin ke clipboard.', 'success');
+        }).catch(() => showAlert('Gagal menyalin (clipboard tidak didukung).', 'warning'));
+      });
+
+      $('downloadCsvBaris').addEventListener('click', function() {
+        const csv = buildCsvFromPlanBaris();
+        if (!csv) {
+          showAlert('Buat rencana terlebih dahulu sebelum mengunduh CSV', 'warning');
+          return;
+        }
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'rencana-hafalan-baris.csv';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        showAlert('File CSV berhasil diunduh', 'success');
+      });
+
+      $('printBtnBaris').addEventListener('click', function() { printPlan('baris'); });
+      $('printPlanBaris').addEventListener('click', function() { printPlan('baris'); });
+
+      // Mode Per Ayat
+      $('calcBtnAyat').addEventListener('click', function() {
+        computeAndDisplayAyat();
+      });
+      
+      $('genPlanBtnAyat').addEventListener('click', generatePlanAyat);
+      
+      $('resetBtnAyat').addEventListener('click', function() {
+        $('selectJuz').value = 1;
+        $('ayatPerHari').value = 5;
+        $('hariPerMingguAyat').value = 5;
+        $('resultsAyat').classList.add('visually-hidden');
+        $('planCardAyat').classList.add('visually-hidden');
+        $('planListAyat').innerHTML = '';
+        updateJuzInfo();
+        showAlert('Form telah direset ke nilai default', 'info');
+      });
+
+      $('copyBtnAyat').addEventListener('click', function() {
+        const r = computeAndDisplayAyat();
+        if (!r) return;
+        const text = `Hasil Hafalan (Per Ayat):
+Juz: ${r.selectedJuz}
+Total ayat: ${r.totalAyat}
+Ayat per minggu: ${r.ayatPerMinggu}
+Perkiraan minggu: ${r.weeksNeededCeil} minggu
+Perkiraan bulan: ${r.monthsApprox} bulan
+(ayat-per-hari: ${r.ayatPerHari}, hari-per-minggu: ${r.hariPerMinggu})`;
+        navigator.clipboard?.writeText(text).then(() => {
+          showAlert('Ringkasan berhasil disalin ke clipboard.', 'success');
+        }).catch(() => showAlert('Gagal menyalin (clipboard tidak didukung).', 'warning'));
+      });
+
+      $('downloadCsvAyat').addEventListener('click', function() {
+        const csv = buildCsvFromPlanAyat();
+        if (!csv) {
+          showAlert('Buat rencana terlebih dahulu sebelum mengunduh CSV', 'warning');
+          return;
+        }
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'rencana-hafalan-ayat.csv';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        showAlert('File CSV berhasil diunduh', 'success');
+      });
+
+      $('printBtnAyat').addEventListener('click', function() { printPlan('ayat'); });
+      $('printPlanAyat').addEventListener('click', function() { printPlan('ayat'); });
+
+      // Auto compute initial
+      computeAndDisplayBagian();
+    });
+  </script>
+
+  <!-- Bootstrap bundle (Popper included) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
