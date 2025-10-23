@@ -122,5 +122,7 @@ Dikembangkan dengan ❤️ untuk memudahkan perjalanan hafalan Al-Quran.
     ├── Print Functionality
     └── UI Interactions
 ```
+---
+
 > 📖 *Semoga aplikasi ini bermanfaat untuk perjalanan hafalan Quran Anda.*  
 > **Barakallahu fiikum.**
