@@ -62,35 +62,6 @@
 - **Responsive Design** untuk semua perangkat  
 
 ---
-
-## 📁 Struktur Kode
-
-├── HTML Structure
-│   ├── Hero Section dengan statistik
-│   ├── Tips Hafalan Efektif
-│   ├── Tabs Navigation (3 mode)
-│   ├── Input Forms per mode
-│   ├── Results Display
-│   ├── Weekly Plan Accordion
-│   └── Footer
-│
-├── CSS Features
-│   ├── CSS Custom Properties
-│   ├── Gradient Backgrounds
-│   ├── Responsive Grid System
-│   ├── Custom Animations
-│   ├── Print Styles
-│   └── Timeline Components
-│
-└── JavaScript Modules
-    ├── Data Management (juz & ayat)
-    ├── Calculation Functions
-    ├── Plan Generation
-    ├── CSV Export
-    ├── Print Functionality
-    └── UI Interactions
-
----
 ## 💾 Data yang Tersedia
 Aplikasi ini dilengkapi dengan data Al-Quran yang lengkap:
 
@@ -124,6 +95,32 @@ Dikembangkan dengan ❤️ untuk memudahkan perjalanan hafalan Al-Quran.
 **Website:** [www.pusatquran.com](https://www.pusatquran.com)
 
 ---
-
+## 📁 Struktur Kode
+```
+├── HTML Structure
+│   ├── Hero Section dengan statistik
+│   ├── Tips Hafalan Efektif
+│   ├── Tabs Navigation (3 mode)
+│   ├── Input Forms per mode
+│   ├── Results Display
+│   ├── Weekly Plan Accordion
+│   └── Footer
+│
+├── CSS Features
+│   ├── CSS Custom Properties
+│   ├── Gradient Backgrounds
+│   ├── Responsive Grid System
+│   ├── Custom Animations
+│   ├── Print Styles
+│   └── Timeline Components
+│
+└── JavaScript Modules
+    ├── Data Management (juz & ayat)
+    ├── Calculation Functions
+    ├── Plan Generation
+    ├── CSV Export
+    ├── Print Functionality
+    └── UI Interactions
+```
 > 📖 *Semoga aplikasi ini bermanfaat untuk perjalanan hafalan Quran Anda.*  
 > **Barakallahu fiikum.**
